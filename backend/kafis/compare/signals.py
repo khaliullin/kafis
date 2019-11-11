@@ -1,9 +1,7 @@
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
-from compare.models import Compare
+from compare.tasks import cache_table
+from kafis.settings import CACHE_UPDATE_FREQ
 
 
-@receiver(post_save, sender=Compare)
 def update_table_cache(sender, instance, created, **kwargs):
-    pass
+    if instance.id % CACHE_UPDATE_FREQ == 0:
+        cache_table.delay(instance.selected.gender)

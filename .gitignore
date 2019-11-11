@@ -55,6 +55,7 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
+dump.rdb
 
 # Flask stuff:
 instance/
@@ -106,3 +107,5 @@ venv.bak/
 .DS_Store
 .idea
 .idea/*
+
+backend/kafis/dump.rdb

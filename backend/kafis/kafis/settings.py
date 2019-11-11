@@ -148,3 +148,6 @@ CRSF_COOKIE_SAMESITE = None
 CSRF_TRUSTED_ORIGINS = [
     '192.168.1.45'
 ]
+
+# Update cache table every N steps
+CACHE_UPDATE_FREQ = 10

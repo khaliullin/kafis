@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 import redis
 import random
 from collections import defaultdict, OrderedDict
@@ -28,15 +30,17 @@ def set_table_cache(compare):
             score = 0
 
         result[person.id] = score
-    result = OrderedDict(result)
+    result = OrderedDict(
+        sorted(result.items(), key=itemgetter(1), reverse=True)
+    )
 
-    r.hmset(f'table_{compare}', result)
+    r.zadd(f'table_{compare}', result)
 
     return result
 
 
 def get_random_pair(compare):
-    people = r.hkeys(f'table_{compare}')
+    people = r.zrevrange(f'table_{compare}', 0, -1)
     if not people:
         table = set_table_cache(compare)
         people = list(table.keys())
@@ -58,3 +62,36 @@ def get_random_pair(compare):
     ).get()
 
     return person1, person2
+
+
+def get_rating_table(compare, rates_count):
+    people_count = Person.objects.count()
+    # range between each position in table
+    step = people_count // 10
+    # number of available positions in table
+    display = rates_count // step
+
+    items = r.zrevrange(f'table_{compare}', 0, 10, True)
+
+    result = []
+    for i, item in enumerate(reversed(items)):
+        person_id = item[0]
+        score = round(item[1], 3)
+        if i <= display:
+            person = Person.objects.get(id=person_id)
+            row = dict(
+                id=person_id,
+                link=f'https://vk.com/id{person.vk_id}',
+                name=person.name,
+                score=score
+            )
+        else:
+            row = dict(
+                id=person_id,
+                link='',
+                name='Скрыто',
+                score=score
+            )
+        result.append(row)
+
+    return reversed(result)

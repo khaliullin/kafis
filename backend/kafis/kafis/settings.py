@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'kafis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_base_db',
+        'NAME': 'kafis',
         'USER': 'djangouser',
         'PASSWORD': 'Kafis_Dev_ksim2019',
         'HOST': 'localhost',

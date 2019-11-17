@@ -1,3 +1,5 @@
+import random
+
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -29,17 +31,14 @@ class StartViewSet(viewsets.ViewSet):
             )
         else:
             print('hey there')
-        person1, person2 = get_random_pair(request.data.get('compare'))
-        person1 = PersonSerializer(person1, context={"request": request})
-        person2 = PersonSerializer(person2, context={"request": request})
+        people = []
+        for i in range(5):
+            person1, person2 = get_random_pair(request.data.get('compare'))
+            person1 = PersonSerializer(person1, context={"request": request})
+            person2 = PersonSerializer(person2, context={"request": request})
+            people.append({'person1': person1.data, 'person2': person2.data})
 
-        response = {
-            'person1': person1.data,
-            'person2': person2.data}
-
-        print('SESSION: ' + request.session.session_key)
-
-        return Response(data=response)
+        return Response(data=people)
 
 
 class RateViewSet(viewsets.ViewSet):
@@ -56,13 +55,17 @@ class RateViewSet(viewsets.ViewSet):
             not_selected_id=not_selected
         )
 
-        person1, person2 = get_random_pair(request.data.get('compare'))
-        person1 = PersonSerializer(person1, context={"request": request})
-        person2 = PersonSerializer(person2, context={"request": request})
+        pair = list(get_random_pair(request.data.get('compare')))
+        person1 = PersonSerializer(
+            pair.pop(random.randrange(2)),
+            context={"request": request}
+        )
+        person2 = PersonSerializer(pair[0], context={"request": request})
 
         response = {
             'person1': person1.data,
-            'person2': person2.data}
+            'person2': person2.data
+        }
 
         return Response(data=response)
 

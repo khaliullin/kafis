@@ -26,7 +26,7 @@ SECRET_KEY = 'm36c6fvk@27w-1)!^753&g-ee#pic(py(2obs651q5_0s7!l52'
 DEBUG = True
 
 # ALLOWED_HOSTS = ['192.168.1.45']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['185.228.234.181']
 
 
 # Application definition
@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'kafis.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_base_db',
+        'USER': 'djangouser',
+        'PASSWORD': 'Kafis_Dev_ksim2019',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -134,6 +138,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     'http://192.168.1.45:3000',
     'http://127.0.0.1:3000',
+    'http://185.228.234.181:3000'
 ]
 
 REST_FRAMEWORK = {
@@ -146,7 +151,8 @@ SESSION_COOKIE_SAMESITE = None
 CRSF_COOKIE_SAMESITE = None
 
 CSRF_TRUSTED_ORIGINS = [
-    '192.168.1.45'
+    # '192.168.1.45',
+    '185.228.234.181'
 ]
 
 # Update cache table every N steps

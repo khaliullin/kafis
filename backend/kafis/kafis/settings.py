@@ -139,6 +139,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
     'http://kafis.site',
+    'http://kafis.site/',
     'http://185.228.234.181',
     'http://185.228.234.181:8000',
     'http://192.168.1.45:3000',

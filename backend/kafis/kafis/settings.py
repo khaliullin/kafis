@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -25,9 +24,13 @@ SECRET_KEY = 'm36c6fvk@27w-1)!^753&g-ee#pic(py(2obs651q5_0s7!l52'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['192.168.1.45']
-ALLOWED_HOSTS = ['kafis.site', '185.228.234.181', '127.0.0.1', 'localhost']
-
+ALLOWED_HOSTS = [
+    'kafis.site',
+    '185.228.234.181',
+    '127.0.0.1',
+    'localhost',
+    '192.168.1.44'
+]
 
 # Application definition
 
@@ -75,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kafis.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -91,7 +93,6 @@ DATABASES = {
         'PORT': '',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -111,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -124,7 +124,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -139,9 +138,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
+    'kafis.site',
+    'http://185.228.234.181',
+    'http://185.228.234.181:8000',
     'http://192.168.1.45:3000',
     'http://127.0.0.1:3000',
-    'http://185.228.234.181:3000',
     'http://localhost:3000',
 ]
 
@@ -157,7 +158,9 @@ CRSF_COOKIE_SAMESITE = None
 CSRF_TRUSTED_ORIGINS = [
     # '192.168.1.45',
     # 'localhost',
+    'kafis.site',
     '185.228.234.181',
+    '185.228.234.181:8000/'
 ]
 
 # Update cache table every N steps

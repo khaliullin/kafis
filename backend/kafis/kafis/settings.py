@@ -26,7 +26,7 @@ SECRET_KEY = 'm36c6fvk@27w-1)!^753&g-ee#pic(py(2obs651q5_0s7!l52'
 DEBUG = True
 
 # ALLOWED_HOSTS = ['192.168.1.45']
-ALLOWED_HOSTS = ['kafis.site', '185.228.234.181']
+ALLOWED_HOSTS = ['kafis.site', '185.228.234.181', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -83,7 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'kafis',
+        # 'USER': 'postgres',
         'USER': 'djangouser',
+        # 'PASSWORD': 'postgres',
         'PASSWORD': 'Kafis_Dev_ksim2019',
         'HOST': 'localhost',
         'PORT': '',
@@ -140,6 +142,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://192.168.1.45:3000',
     'http://127.0.0.1:3000',
     'http://185.228.234.181:3000'
+    'http://localhost:3000'
 ]
 
 REST_FRAMEWORK = {
@@ -153,7 +156,8 @@ CRSF_COOKIE_SAMESITE = None
 
 CSRF_TRUSTED_ORIGINS = [
     # '192.168.1.45',
-    '185.228.234.181'
+    'localhost',
+    # '185.228.234.181',
 ]
 
 # Update cache table every N steps

@@ -29,10 +29,8 @@ class StartViewSet(viewsets.ViewSet):
                 session_id=request.session.session_key,
                 gender=request.data.get('gender')
             )
-        else:
-            print('hey there')
         people = []
-        for i in range(5):
+        for i in range(2):
             person1, person2 = get_random_pair(request.data.get('compare'))
             person1 = PersonSerializer(person1, context={"request": request})
             person2 = PersonSerializer(person2, context={"request": request})
@@ -43,7 +41,6 @@ class StartViewSet(viewsets.ViewSet):
 
 class RateViewSet(viewsets.ViewSet):
     def create(self, request):
-        print('SESSION: ' + request.session.session_key)
         if not request.session.session_key:
             return Response()
         expert = Expert.objects.get(session_id=request.session.session_key)

@@ -12,13 +12,11 @@ r = redis.Redis('localhost')
 def set_table_cache(compare):
     """
     Cache of all People and their scores
-    :param compare: Person gender filter (M, F of A)
+    :param compare: Person gender filter (M or F)
     :return: dict(key=person__id, value=score)
     """
     result = defaultdict(float)
-    people = Person.objects.all()
-    if compare != 'A':
-        people = people.filter(gender=compare)
+    people = Person.objects.filter(gender=compare)
 
     for person in people:
         selected = Compare.objects.filter(selected=person).count()

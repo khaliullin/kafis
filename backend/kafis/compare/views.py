@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from compare.helpers import set_table_cache, get_random_pair, get_rating_table
-from compare.models import Person, Expert, Compare
+from compare.models import Person, Expert, Compare, Report
 from compare.serializers import PersonSerializer
 
 
@@ -79,3 +79,17 @@ class RatingViewSet(viewsets.ViewSet):
         table = get_rating_table(pk, rates_count)
         return Response(data=table)
 
+
+class ReportViewSet(viewsets.ViewSet):
+    def create(self, request):
+        if not request.session.session_key:
+            return Response()
+        expert = Expert.objects.get(session_id=request.session.session_key)
+        person = int(request.data.get('choice'))
+        reason = request.data.get('reason')
+        Report.objects.create(
+            expert=expert,
+            person_id=person,
+            reason=reason
+        )
+        return Response()

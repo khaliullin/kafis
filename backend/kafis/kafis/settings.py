@@ -165,4 +165,4 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Update cache table every N steps
-CACHE_UPDATE_FREQ = 10
+CACHE_UPDATE_FREQ = 100

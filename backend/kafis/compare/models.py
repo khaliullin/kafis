@@ -28,8 +28,8 @@ class Expert(models.Model):
 
 
 class Compare(models.Model):
-    expert = models.ForeignKey(Expert, on_delete=models.CASCADE)
-    selected = models.ForeignKey(Person, related_name='selected',
+    expert = models.ForeignKey(Expert, null=True, on_delete=models.CASCADE)
+    selected = models.ForeignKey(Person, related_name='selected', null=True,
                                  on_delete=models.CASCADE)
     not_selected = models.ForeignKey(Person, related_name='not_selected',
                                      on_delete=models.CASCADE)
@@ -37,3 +37,12 @@ class Compare(models.Model):
 
     def __str__(self):
         return f'{self.selected} - {self.not_selected} ({self.expert})'
+
+
+class Report(models.Model):
+    expert = models.ForeignKey(Expert, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=150)
+
+    def __str__(self):
+        return f'{self.person} ({self.reason[:30]})'

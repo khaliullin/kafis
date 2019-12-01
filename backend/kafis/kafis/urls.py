@@ -11,6 +11,7 @@ router.register(r'person', views.PersonView, 'person')
 router.register(r'start', views.StartViewSet, 'start')
 router.register(r'rate', views.RateViewSet, 'rate')
 router.register(r'rating', views.RatingViewSet, 'rating')
+router.register(r'report', views.ReportViewSet, 'report')
 
 urlpatterns = [
     path('', include(router.urls)),

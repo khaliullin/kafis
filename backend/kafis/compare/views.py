@@ -3,7 +3,8 @@ import random
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from compare.helpers import set_table_cache, get_random_pair, get_rating_table
+from compare.helpers import (
+    get_random_pair, get_rating_table, get_anon_name)
 from compare.models import Person, Expert, Compare, Report
 from compare.serializers import PersonSerializer
 
@@ -24,7 +25,7 @@ class StartViewSet(viewsets.ViewSet):
 
     def create(self, request):
         if not request.session.session_key:
-            request.session.save()
+            request.session.create()
             Expert.objects.create(
                 session_id=request.session.session_key,
                 gender=request.data.get('gender')
@@ -41,11 +42,14 @@ class StartViewSet(viewsets.ViewSet):
 
 class RateViewSet(viewsets.ViewSet):
     def create(self, request):
-        if not request.session.session_key:
-            return Response()
-        expert = Expert.objects.get(session_id=request.session.session_key)
+        if request.session.session_key:
+            expert = Expert.objects.get(session_id=request.session.session_key)
+        else:
+            expert, _ = Expert.objects.get_or_create(session_id=get_anon_name())
+
         selected = request.data.get('selected')
         not_selected = request.data.get('not_selected')
+
         Compare.objects.create(
             expert=expert,
             selected_id=selected,
@@ -69,22 +73,22 @@ class RateViewSet(viewsets.ViewSet):
 
 class RatingViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk):
-        if not request.session.session_key:
-            request.session.save()
-            return Response()
-
-        expert = Expert.objects.get(session_id=request.session.session_key)
+        if request.session.session_key:
+            expert = Expert.objects.get(session_id=request.session.session_key)
+        else:
+            expert, _ = Expert.objects.get_or_create(session_id=get_anon_name())
         rates_count = Compare.objects.filter(expert=expert).count()
-
         table = get_rating_table(pk, rates_count)
+
         return Response(data=table)
 
 
 class ReportViewSet(viewsets.ViewSet):
     def create(self, request):
-        if not request.session.session_key:
-            return Response()
-        expert = Expert.objects.get(session_id=request.session.session_key)
+        if request.session.session_key:
+            expert = Expert.objects.get(session_id=request.session.session_key)
+        else:
+            expert, _ = Expert.objects.get(session_id=get_anon_name())
         person = int(request.data.get('choice'))
         reason = request.data.get('reason')
         Report.objects.create(

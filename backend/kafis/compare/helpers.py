@@ -1,7 +1,7 @@
-from operator import itemgetter
-
+import datetime
 import redis
 import random
+from operator import itemgetter
 from collections import defaultdict, OrderedDict
 
 from compare.models import Person, Compare
@@ -64,18 +64,22 @@ def get_random_pair(compare):
 
 def get_rating_table(compare, rates_count):
     people_count = Person.objects.count()
+    # To reduce too big steps
+    adj_koef = people_count // 1000
+
     # range between each position in table
-    step = people_count // 10
+    step = people_count // (10 * adj_koef or 10)
     # number of available positions in table
     display = rates_count // step
 
-    items = r.zrevrange(f'table_{compare}', 0, 10, True)
+    items = r.zrevrange(f'table_{compare}', 0, 9, True)
 
     result = []
     for i, item in enumerate(reversed(items)):
         person_id = item[0]
         score = round(item[1], 3)
         if i <= display:
+            # Shown rating row
             person = Person.objects.get(id=person_id)
             row = dict(
                 id=person_id,
@@ -83,7 +87,17 @@ def get_rating_table(compare, rates_count):
                 name=person.name,
                 score=score
             )
+        elif i == display + 1:
+            # Hidden rating row
+            hidden_text = f'Выберите {(i - display) * step} чел.'
+            row = dict(
+                id=person_id,
+                link='',
+                name=hidden_text,
+                score=score
+            )
         else:
+            # Hidden rating row
             row = dict(
                 id=person_id,
                 link='',
@@ -93,3 +107,7 @@ def get_rating_table(compare, rates_count):
         result.append(row)
 
     return reversed(result)
+
+
+def get_anon_name():
+    return f'anon_{datetime.date.today()}'

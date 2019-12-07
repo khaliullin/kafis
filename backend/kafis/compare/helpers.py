@@ -5,6 +5,7 @@ from operator import itemgetter
 from collections import defaultdict, OrderedDict
 
 from compare.models import Person, Compare
+from kafis.settings import BLOCKS_NUMBER
 
 r = redis.Redis('localhost')
 
@@ -44,7 +45,7 @@ def get_random_pair(compare):
         people = list(table.keys())
 
     # Max possible distance between person1 and person2 from table
-    max_step = len(people) // 4
+    max_step = len(people) // BLOCKS_NUMBER
     if max_step == 0:
         return None, None
 

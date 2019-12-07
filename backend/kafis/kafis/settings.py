@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'm36c6fvk@27w-1)!^753&g-ee#pic(py(2obs651q5_0s7!l52'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'kafis.site',
@@ -85,12 +85,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'kafis',
-        'USER': 'postgres',
-        # 'USER': 'djangouser',
-        'PASSWORD': 'postgres',
-        # 'PASSWORD': 'Kafis_Dev_ksim2019',
-        'HOST': 'localhost',
-        # 'HOST': '185.228.234.181',
+        # 'USER': 'postgres',
+        'USER': 'djangouser',
+        # 'PASSWORD': 'postgres',
+        'PASSWORD': 'Kafis_Dev_ksim2019',
+        # 'HOST': 'localhost',
+        'HOST': '185.228.234.181',
         'PORT': '',
     }
 }
@@ -166,3 +166,6 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Update cache table every N steps
 CACHE_UPDATE_FREQ = 200
+
+# Denominator for calculating max distance between two people
+BLOCKS_NUMBER = 8

@@ -16,8 +16,9 @@ import random
 
 warnings.warn = warn
 
-dlibFacePredictor = 'shape_predictor_68_face_landmarks.dat'
-networkModel = 'nn4.small2.v1.t7'
+# dlibFacePredictor = 'shape_predictor_68_face_landmarks.dat'
+dlibFacePredictor = '/root/openface/models/dlibshape_predictor_68_face_landmarks.dat'
+networkModel = '/root/openface/models/openface/nn4.small2.v1.t7'
 align = openface.AlignDlib(dlibFacePredictor)
 net = openface.TorchNeuralNet(networkModel, 96)
 models_path = 'model.joblib'

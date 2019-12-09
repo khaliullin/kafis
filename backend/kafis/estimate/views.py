@@ -29,7 +29,9 @@ class PhotoUploadView(APIView):
                 serializer.save()
                 print('serializer.data', serializer.data)
                 from estimate.core import process
-                img_path, cls_name = process(serializer.data['image'])
+                img_path, cls_name = process(serializer.data['image'],
+                                             serializer.data['gender'],
+                                             serializer.data['name'])
                 # from PIL import Image
                 # processed_image, cls_name = Image.open('estimate/core/certificate.jpg'), 'Вы прекрасны'
                 # img_path = 'media/photos/certificate_999.jpg'.format(id)

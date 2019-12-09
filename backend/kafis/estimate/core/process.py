@@ -17,7 +17,7 @@ import random
 warnings.warn = warn
 
 # dlibFacePredictor = 'shape_predictor_68_face_landmarks.dat'
-dlibFacePredictor = '/home/ubuntu/project/kafis/backend/process/dlibshape_predictor_68_face_landmarks.dat'
+dlibFacePredictor = '/home/ubuntu/project/kafis/backend/process/shape_predictor_68_face_landmarks.dat'
 networkModel = '/home/ubuntu/project/kafis/backend/process/nn4.small2.v1.t7'
 align = openface.AlignDlib(dlibFacePredictor)
 net = openface.TorchNeuralNet(networkModel, 96)

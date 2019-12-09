@@ -13,6 +13,7 @@ def warn(*args, **kwargs):
 
 import warnings
 import random
+import traceback
 
 warnings.warn = warn
 
@@ -21,7 +22,7 @@ dlibFacePredictor = '/home/ubuntu/project/kafis/backend/process/shape_predictor_
 networkModel = '/home/ubuntu/project/kafis/backend/process/nn4.small2.v1.t7'
 align = openface.AlignDlib(dlibFacePredictor)
 net = openface.TorchNeuralNet(networkModel, 96)
-models_path = 'model.joblib'
+models_path = '/home/ubuntu/project/kafis/backend/kafis/estimate/core/model.joblib'
 
 
 def preprocess(imgPath, gender='F', name=None):
@@ -44,7 +45,7 @@ def preprocess(imgPath, gender='F', name=None):
         try:
             alignedFace = align.align(96, rgbImg, bb,
                                       landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
-            rep = net.forward(alignedFace).reshape(1, -1)
+            #rep = net.forward(alignedFace).reshape(1, -1)
 
             left = max(int(bb.left() - bb.width() * 0.5), 0)
             right = min(int(bb.right() + bb.width() * 0.5), int(rgbImg.shape[1]))
@@ -53,14 +54,15 @@ def preprocess(imgPath, gender='F', name=None):
 
             models = load(models_path)[0]
 
-            cls_name = class_names[models[gender].predict(rep)[0]]
+            cls_name = 'красивый'#class_names[models[gender].predict(rep)[0]]
             print(cls_name)
             face = Image.fromarray(rgbImg[top:bottom, left:right])
             img_path = cert(face, name, cls_name)
             return img_path, cls_name
-        except:
-            raise Exception('Не удаётся извлечь признаки, выберите другую фотографию!')
-
+        except Exception as e:
+            traceback.print_exc()
+            raise Exception('Не удаётся извлечь признаки, выберите другую фотографию!' + '\n' + str(e)) 
+            
 
 # img1 = '/home/ivan/faces/Kristina_Фомина_75814093_M_4.jpg'
 # img2 = '/home/ivan/faces/img/yandex2.jpg'

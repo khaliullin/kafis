@@ -21,6 +21,7 @@ class PhotoUploadView(APIView):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
+        path = 'no path'
         try:
             print('request.data:', request.data)
             serializer = PhotoSerializer(data=request.data)
@@ -29,7 +30,9 @@ class PhotoUploadView(APIView):
                 serializer.save()
                 print('serializer.data', serializer.data)
                 from estimate.core import process
-                img_path, cls_name = process.preprocess(serializer.data['image'],
+                path = '/home/ubuntu/project/kafis/backend/kafis' + serializer.data['image']
+                print(path)
+                img_path, cls_name = process.preprocess(path,
                                              serializer.data['gender'],
                                              serializer.data['name'])
                 # from PIL import Image
@@ -46,5 +49,5 @@ class PhotoUploadView(APIView):
             raise AttributeError('No `name` or `gender` or `image` in', request.data)
         except Exception as e:
             print(str(e))
-            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(str(e) + '\n' + path, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

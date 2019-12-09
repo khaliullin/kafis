@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from estimate.models import Photo
-
+import traceback
 
 class PhotoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -48,6 +48,7 @@ class PhotoUploadView(APIView):
             print('serializer not valid')
             raise AttributeError('No `name` or `gender` or `image` in', request.data)
         except Exception as e:
-            print(str(e))
-            return Response(str(e) + '\n' + path, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print('Error:', str(e))
+            traceback.print_exc()
+            return Response({'error': str(e)}, status=status.HTTP_202_ACCEPTED)
 

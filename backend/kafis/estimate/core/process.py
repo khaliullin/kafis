@@ -14,6 +14,7 @@ def warn(*args, **kwargs):
 import warnings
 import random
 import traceback
+import urllib.parse
 
 warnings.warn = warn
 
@@ -28,7 +29,7 @@ models_path = '/home/ubuntu/project/kafis/backend/kafis/estimate/core/model.jobl
 def preprocess(imgPath, gender='F', name=None):
     if name is None:
         name = str(random.randint(1, 999999))
-    bgrImg = cv2.imread(imgPath)
+    bgrImg = cv2.imread(urllib.parse.unquote(imgPath))
 
     rgbImg = cv2.cvtColor(bgrImg, cv2.COLOR_BGR2RGB)
 
